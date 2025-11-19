@@ -77,12 +77,10 @@ def Rescue_time_calculator(d1_yard, d2_feet, h, v_sand_mph, n, theta1_deg):
     return time
 
 # Функция рассчета оптимального угла
-def Calculate_optimal_angle(d1, d2, h, v_sand, n):
-    
+def Calculate_optimal_angle(d1, d2, h, v_sand, n):    
 
     best_time = 9999.0 # большое число
-    best_angle = 0.0
-
+    best_angle = 0.0    
     theta1_deg = 0.0  
 
     while theta1_deg <= 90.0:
