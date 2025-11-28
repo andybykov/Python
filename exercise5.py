@@ -26,7 +26,7 @@ class GameOfLife:
        self.gen_finish = False # флаг окончания 
 
         # Параметры визуализации
-       self.base_color = (0, 255, 0)   # зелёный
+       self.base_color = (0, 0, 255)   # синий
        self.cell_size = 20
        self.border_width = 2
         
@@ -242,7 +242,7 @@ class GameOfLife:
 
 def main():
 
-    game = GameOfLife("input.txt","", "img") 
+    game = GameOfLife("input.txt","output.txt", "img", 30) 
     
     try:
         game.run_simulation()
