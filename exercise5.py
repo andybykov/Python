@@ -1,5 +1,6 @@
 import os
 import time
+from PIL import Image, ImageDraw
 
 class GameOfLife:
     # Конструктор класса
@@ -13,7 +14,9 @@ class GameOfLife:
        self.grid = self.load_from_file()       
        self.rows = len(self.grid) # вычисляем длину строки
        self.cols = len(self.grid[0]) # вычисляем количество столбцов по 0 строке
-       self.generations = generations  # количество генераций            
+       self.generations = generations  # количество генераций  
+       self.iterations = 0 # количество итераций    
+       self.gen_finish = False # флаг окончания     
 
     def neighbors_counter(self, row, col):
         """ Счетчик соседей """
@@ -61,7 +64,11 @@ class GameOfLife:
                     if neighbors == 3:
                         new_grid[row][col] = 1  # рождается
                     else:
-                        new_grid[row][col] = 0  # остается пустой
+                        new_grid[row][col] = 0  # остается пустой     
+
+        if self.grid == new_grid:
+            self.gen_finish = True
+        
         self.grid = new_grid
         return new_grid
      
@@ -104,42 +111,44 @@ class GameOfLife:
                 else:
                     print('□', end = ' ')
                    #print('', end = ' ')
-            print('')    
+            print('')
+         
+        print(f"\nIteration:{self.iterations}") 
+        if self.gen_finish: 
+            print("Generation finished!")  
+            
 
     def run_simulation(self):
-        """Запуск симуляции """
-        gen_count = 1 # счетчик поколений
-        
+        """Запуск симуляции """       
+        def run():
+            gen_count = 1 # счетчик поколений
+            continue_gen = self.next_gen()            
+            self.display()
+            self.write_to_file(gen_count)
+            gen_count += 1
+            
+            return continue_gen
+
         if self.generations > 0: # указанное количество итераций                     
             for _ in range(self.generations):
-                self.next_gen()
-                self.display()
-                self.write_to_file(gen_count)
-                gen_count += 1
+                run()
+                if self.gen_finish == True:                    
+                    break 
                 time.sleep(0.3)  # Пауза 
             return        
         elif self.generations == -1: # бесконечно
             while True:
-                self.next_gen()
-                self.display()
-                self.write_to_file(gen_count)
-                gen_count += 1
-                time.sleep(0.3)  # Пауза 
+                run()
+                if self.gen_finish == True:                    
+                    break        
+                self.iterations +=1 # ---        
+                time.sleep(0.3)  # Пауза              
 
 def main():
 
     game = GameOfLife("input.txt","") 
     
     try:
-        #game.display()
-       #print(game.cols)
-       # print(game.rows)
-        #print(game.grid)
-        #rows = len(game.grid)
-        #print(rows)
-
-        #cols = len(game.grid[0])
-        #print(cols)
         game.run_simulation()
     except KeyboardInterrupt:
         print("\nKeyboard Interrupt!")
