@@ -110,7 +110,7 @@ class GameOfLife:
         return          
 
     def save_image(self, iteration: int) -> None:
-        """Создаёт PNG-файл с оттенками базового цвета в зависимости от возраста клеток"""
+        """PNG файл с изменением цвета в зависимости от возраста клеток"""
         if self.output_filename_png == '':
             return
 
